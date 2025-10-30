@@ -17,6 +17,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.rhythmdoc.R;
 import com.example.rhythmdoc.databinding.ActivityBaseBinding;
 import com.example.rhythmdoc.fragments.ChangePasswordFragment;
+import com.example.rhythmdoc.fragments.CheckReportFragment;
 import com.example.rhythmdoc.fragments.HomeFragment;
 import com.example.rhythmdoc.fragments.MyDetailsFragment;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -58,6 +59,8 @@ public class BaseActivity extends AppCompatActivity {
                 loadFragment(new ChangePasswordFragment());
             } else if (item.getItemId() == R.id.nav_logout) {
                 showLogOutDialog();
+            } else if (item.getItemId() == R.id.nav_check_report_log_advice) {
+                loadFragment(new CheckReportFragment());
             }
 
             binding.drawerLayout.closeDrawers();
