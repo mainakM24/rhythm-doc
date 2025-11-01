@@ -8,24 +8,46 @@
     android:orientation="vertical"
     tools:context=".fragments.CheckReportFragment">
 
-    <com.google.android.material.textfield.TextInputLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:boxBackgroundColor="@color/input_background"
-        android:hint="@string/search_hint"
-        android:layout_marginBottom="8dp"
-        style="@style/ThemeOverlay.Material3.TextInputEditText.OutlinedBox">
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_search_box"
-            android:layout_width="match_parent"
+        android:weightSum="10"
+        android:layout_marginBottom="4dp"
+        android:padding="4dp"
+        android:orientation="horizontal">
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/white"/>
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_weight="9"
+            app:boxBackgroundColor="@color/input_background"
+            android:hint="@string/search_hint"
+            style="@style/ThemeOverlay.Material3.TextInputEditText.OutlinedBox">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_search_box"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="@color/white"/>
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/search_button"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginStart="6dp"
+            android:backgroundTint="@color/primary"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            app:cornerRadius="6dp"
+            android:gravity="center"
+            android:text="@string/search_button"/>
+    </LinearLayout>
 
     <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
        <TableLayout
+           android:id="@+id/tl_all_patient"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:background="@color/table_background"
@@ -34,6 +56,7 @@
            <TableRow
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
+               android:background="@color/table_header"
                tools:ignore="uselessParent">
                <TextView
                    android:layout_width="wrap_content"
@@ -90,11 +113,6 @@
                    android:padding="6dp"
                    android:text="@string/status"/>
            </TableRow>
-
-           <androidx.recyclerview.widget.RecyclerView
-               android:id="@+id/recycler_view"
-               android:layout_width="match_parent"
-               android:layout_height="wrap_content" />
        </TableLayout>
     </HorizontalScrollView>
 
@@ -103,6 +121,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="6dp"
+        android:visibility="gone"
         android:weightSum="5">
         <com.google.android.material.button.MaterialButton
             android:layout_width="wrap_content"
