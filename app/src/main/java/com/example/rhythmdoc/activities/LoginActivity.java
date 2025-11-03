@@ -54,9 +54,7 @@ public class LoginActivity extends AppCompatActivity {
         //clicking sign in button
         binding.btSignIn.setOnClickListener(view -> {
 
-            new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                binding.pbLoginProgressBar.setVisibility(View.VISIBLE);
-            }, 1000);
+            new Handler(Looper.getMainLooper()).postDelayed(() -> binding.pbLoginProgressBar.setVisibility(View.VISIBLE), 1000);
             binding.tilUsername.setError(null);
             binding.tilPassword.setError(null);
 
@@ -98,7 +96,8 @@ public class LoginActivity extends AppCompatActivity {
                             binding.tilPassword.setError("Check Password");
                         }
                     } else {
-                        System.err.println("Error: " + response.code() + " - " + response.errorBody().toString());
+                        assert response.errorBody() != null;
+                        System.err.println("Error: " + response.code() + " - " + response.errorBody());
                     }
                 }
 

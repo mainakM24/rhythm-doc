@@ -3,12 +3,10 @@ package com.example.rhythmdoc.fragments;
 import static android.content.Context.MODE_PRIVATE;
 
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -39,7 +37,6 @@ public class CheckReportFragment extends Fragment {
     private FragmentCheckReportBinding binding;
     private List<Patient> oldPatientList;
     private List<Patient> activePatientList;
-    private  List<Patient> allPatientList = new ArrayList<>();
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -52,13 +49,14 @@ public class CheckReportFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        List<Patient> allPatientList = new ArrayList<>();
         SharedPreferences sharedPreferences = requireContext().getSharedPreferences("login", MODE_PRIVATE);
         String userId = sharedPreferences.getString("userId", "error");
-
         ApiService apiService = RetrofitClient.getApiService();
-
         Call<ApiResponse<Patient>> oldPatientApiResponseCall = apiService.getOldPatient(userId);
         Call<ApiResponse<Patient>> activePatientApiResponseCall = apiService.getActivePatient(userId);
+
+        binding.progressBar.setVisibility(View.VISIBLE);
 
         oldPatientApiResponseCall.enqueue(new Callback<ApiResponse<Patient>>() {
             @Override
@@ -133,6 +131,7 @@ public class CheckReportFragment extends Fragment {
     private void updateTable(List<Patient> filteredList) {
         binding.tlAllPatient.removeViews(1, binding.tlAllPatient.getChildCount() - 1);
         addTableRow(filteredList, binding.tlAllPatient);
+        if (oldPatientList != null && activePatientList != null) binding.progressBar.setVisibility(View.GONE);
     }
 
     private boolean isMatching(String value, String query) {
@@ -169,6 +168,7 @@ public class CheckReportFragment extends Fragment {
             }
 
             textViews[0].setTextColor(requireContext().getColor(R.color.link));
+            textViews[0].setOnClickListener(v -> navigateToPatientDetails(patient.getPatient_id()));
             tableLayout.addView(tableRow);
         }
     }
@@ -186,5 +186,19 @@ public class CheckReportFragment extends Fragment {
         textView.setLayoutParams(params);
 
         textView.setPadding(paddingInPx, paddingInPx, paddingInPx, paddingInPx);
+    }
+
+    private void navigateToPatientDetails(String userId) {
+        PatientDetailsFragment fragment = new PatientDetailsFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("USER_ID", userId);
+
+        fragment.setArguments(bundle);
+
+        requireActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.frame_layout, fragment)
+                .addToBackStack(null)
+                .commit();
     }
 }
