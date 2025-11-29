@@ -73,4 +73,6 @@
     <string name="previous">Previous</string>
     <string name="next">Next</string>
     <string name="search_button">Search</string>
+    <string name="patient_information">Patient Information</string>
+    <string name="admission_details">Admission Details</string>
 </resources>

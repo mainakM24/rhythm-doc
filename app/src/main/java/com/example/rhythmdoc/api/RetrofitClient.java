@@ -1,5 +1,7 @@
 package com.example.rhythmdoc.api;
 
+import androidx.annotation.NonNull;
+
 import java.io.IOException;
 
 import okhttp3.Interceptor;
@@ -17,6 +19,7 @@ public class RetrofitClient {
     public static ApiService getApiService(){
 
         Interceptor headerInterceptor = new Interceptor() {
+            @NonNull
             @Override
             public Response intercept(Chain chain) throws IOException {
                 Request originalRequest = chain.request();

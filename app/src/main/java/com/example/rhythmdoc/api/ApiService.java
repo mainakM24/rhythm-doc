@@ -26,6 +26,11 @@ public interface ApiService {
             @Path("docid") String doctorId
     );
 
+    @GET("user/v1/get/patient/info/{pid}")
+    Call<ApiResponse<Patient>> getPatientDetails(
+            @Path("pid") String patientId
+    );
+
     @GET("user/v1/changepassword/{uid}/{opass}/{npass}")
     Call<Void> changePassword(
             @Path("uid") String userId,

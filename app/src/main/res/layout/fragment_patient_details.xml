@@ -1,15 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.PatientDetailsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:id="@+id/textView"
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp"
+        android:orientation="vertical">
 
-</FrameLayout>
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"/>
+
+        <!--Patient Information Table-->
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="@string/patient_information"
+            android:background="@color/table_header"
+            android:padding="12dp"
+            android:layout_marginTop="6dp"
+            android:textSize="@dimen/large_text"
+            android:textStyle="bold"/>
+        <TableLayout
+            android:id="@+id/tl_patient_information"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/table_background"
+            android:padding="6dp"
+            android:stretchColumns="*"
+            android:shrinkColumns="*">
+        </TableLayout>
+
+        <!--Admission Details Table-->
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="@string/admission_details"
+            android:background="@color/table_header"
+            android:padding="12dp"
+            android:layout_marginTop="6dp"
+            android:textSize="@dimen/large_text"
+            android:textStyle="bold"/>
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TableLayout
+                android:id="@+id/tl_admission_details"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/table_background"
+                android:padding="6dp"
+                android:stretchColumns="*"
+                android:shrinkColumns="*">
+                <TableRow
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    tools:ignore="UselessParent">
+                    <TextView
+                        android:layout_gravity="center"
+                        android:textStyle="bold"
+                        android:text="@string/admission_date"
+                        android:padding="6dp"/>
+                    <TextView
+                        android:layout_gravity="center"
+                        android:textStyle="bold"
+                        android:text="@string/hospital_name"
+                        android:padding="6dp"/>
+                    <TextView
+                        android:layout_gravity="center"
+                        android:textStyle="bold"
+                        android:text="@string/hospital_boarding_id"
+                        android:padding="6dp"/>
+                </TableRow>
+                <TableRow
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    tools:ignore="UselessParent">
+                    <TextView
+                        android:id="@+id/tv_admission_date"
+                        android:layout_gravity="center"
+                        android:padding="6dp"/>
+                    <TextView
+                        android:id="@+id/tv_hospital_name"
+                        android:layout_gravity="center"
+                        android:padding="6dp"/>
+                    <TextView
+                        android:id="@+id/tv_boarding_id"
+                        android:layout_gravity="center"
+                        android:padding="6dp"/>
+                </TableRow>
+            </TableLayout>
+        </HorizontalScrollView>
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</ScrollView>

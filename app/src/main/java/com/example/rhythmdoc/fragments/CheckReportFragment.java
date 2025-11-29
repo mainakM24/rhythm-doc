@@ -168,7 +168,7 @@ public class CheckReportFragment extends Fragment {
             }
 
             textViews[0].setTextColor(requireContext().getColor(R.color.link));
-            textViews[0].setOnClickListener(v -> navigateToPatientDetails(patient.getPatient_id()));
+            textViews[0].setOnClickListener(v -> navigateToPatientDetails(patient));
             tableLayout.addView(tableRow);
         }
     }
@@ -188,10 +188,13 @@ public class CheckReportFragment extends Fragment {
         textView.setPadding(paddingInPx, paddingInPx, paddingInPx, paddingInPx);
     }
 
-    private void navigateToPatientDetails(String userId) {
+    private void navigateToPatientDetails(Patient patient) {
         PatientDetailsFragment fragment = new PatientDetailsFragment();
         Bundle bundle = new Bundle();
-        bundle.putString("USER_ID", userId);
+        bundle.putString("PATIENT_ID", patient.getPatient_id());
+        bundle.putString("BOARDING_ID", patient.getBoarding_id());
+        bundle.putString("ADMISSION_DATE", patient.getPd_admission_date());
+        bundle.putString("HOSPITAL_NAME", patient.getPd_hospital_name());
 
         fragment.setArguments(bundle);
 

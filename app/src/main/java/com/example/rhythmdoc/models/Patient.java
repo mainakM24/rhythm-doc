@@ -12,6 +12,20 @@ public class Patient {
     private String boarding_id;
     private String p_status;
 
+    private String p_address;
+    private String p_mobile;
+    private String p_remarks;
+    private String p_start_date;
+    private String p_notes;
+    private String p_street_name;
+    private String p_house_no;
+    private String p_city;
+    private String p_pin_cdoe; // TODO: Spelling mistake
+    private String p_state;
+    private String p_country;
+    private String p_email;
+    private String age;
+
     public String getPatient_id() {
         return patient_id;
     }
@@ -42,6 +56,58 @@ public class Patient {
 
     public String getP_status() {
         return p_status;
+    }
+
+    public String getP_address() {
+        return p_address;
+    }
+
+    public String getP_mobile() {
+        return p_mobile;
+    }
+
+    public String getP_remarks() {
+        return p_remarks;
+    }
+
+    public String getP_start_date() {
+        return p_start_date;
+    }
+
+    public String getP_notes() {
+        return p_notes;
+    }
+
+    public String getP_street_name() {
+        return p_street_name;
+    }
+
+    public String getP_house_no() {
+        return p_house_no;
+    }
+
+    public String getP_city() {
+        return p_city;
+    }
+
+    public String getP_pin_cdoe() {
+        return p_pin_cdoe;
+    }
+
+    public String getP_state() {
+        return p_state;
+    }
+
+    public String getP_country() {
+        return p_country;
+    }
+
+    public String getP_email() {
+        return p_email;
+    }
+
+    public String getAge() {
+        return age;
     }
 
     public void setP_status(String status) {
