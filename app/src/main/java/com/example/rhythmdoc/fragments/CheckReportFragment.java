@@ -129,6 +129,7 @@ public class CheckReportFragment extends Fragment {
     }
 
     private void updateTable(List<Patient> filteredList) {
+        if (binding == null) return;
         binding.tlAllPatient.removeViews(1, binding.tlAllPatient.getChildCount() - 1);
         addTableRow(filteredList, binding.tlAllPatient);
         if (oldPatientList != null && activePatientList != null) binding.progressBar.setVisibility(View.GONE);
@@ -140,6 +141,7 @@ public class CheckReportFragment extends Fragment {
     }
 
     private void addTableRow(List<Patient> patientList, TableLayout tableLayout) {
+        if (binding == null) return;
         if (patientList == null || patientList.isEmpty()) return;
         int padding_6 = Math.round(6 * getResources().getDisplayMetrics().density);
         for (Patient patient : patientList) {
