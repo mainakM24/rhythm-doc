@@ -16,9 +16,11 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.example.rhythmdoc.R;
+import com.example.rhythmdoc.adapters.AdviceAdapter;
 import com.example.rhythmdoc.api.ApiService;
 import com.example.rhythmdoc.api.RetrofitClient;
 import com.example.rhythmdoc.databinding.FragmentPatientDetailsBinding;
+import com.example.rhythmdoc.models.Advice;
 import com.example.rhythmdoc.models.ApiResponse;
 import com.example.rhythmdoc.models.Patient;
 import com.example.rhythmdoc.models.Session;
@@ -39,6 +41,10 @@ public class PatientDetailsFragment extends Fragment {
     private String admissionDate;
     private Patient patientDetails;
     private List<Session> sessionList = new ArrayList<>();
+    private List<Advice> adviceList = new ArrayList<>();
+    private AdviceAdapter adviceAdapter;
+    private int limitMultiplier = 1;
+    private final int LIMIT = 4;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -61,7 +67,9 @@ public class PatientDetailsFragment extends Fragment {
         ApiService apiService = RetrofitClient.getApiService();
         Call<ApiResponse<Patient>> patientDetailsApiResponseCall = apiService.getPatientDetails(patientId);
         Call<ApiResponse<Session>> sessionApiResponseCall = apiService.getSessionDetails(patientId);
+        Call<ApiResponse<Advice>> adviceApiResponseCall = apiService.getLoggedAdvice(patientId, LIMIT * limitMultiplier);
 
+        //Patient Details API Call
         patientDetailsApiResponseCall.enqueue(new Callback<ApiResponse<Patient>>() {
             @Override
             public void onResponse(@NonNull Call<ApiResponse<Patient>> call, @NonNull Response<ApiResponse<Patient>> response) {
@@ -80,6 +88,7 @@ public class PatientDetailsFragment extends Fragment {
             }
         });
 
+        //Session Details API Call
         sessionApiResponseCall.enqueue(new Callback<ApiResponse<Session>>() {
             @Override
             public void onResponse(@NonNull Call<ApiResponse<Session>> call, @NonNull Response<ApiResponse<Session>> response) {
@@ -96,7 +105,31 @@ public class PatientDetailsFragment extends Fragment {
                 Log.e("api", "onFailure: session details", throwable);
             }
         });
+
+        //Advice API Call
+        adviceApiResponseCall.enqueue(new Callback<ApiResponse<Advice>>() {
+            @Override
+            public void onResponse(@NonNull Call<ApiResponse<Advice>> call, @NonNull Response<ApiResponse<Advice>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    adviceList = response.body().getItems();
+                    adviceAdapter = new AdviceAdapter(adviceList);
+                    binding.rvAdvice.setAdapter(adviceAdapter);
+                } else {
+                    System.err.println("Error: " + response.code() + " - " + response);
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ApiResponse<Advice>> call, @NonNull Throwable throwable) {
+                Log.e("api", "onFailure: advice", throwable);
+            }
+        });
+
+        //Loading the Admission Details table with data gotten through bundle
         loadAdmissionDetailsTable();
+
+        //For loading more advice
+        binding.tvLoadMore.setOnClickListener(view1 -> loadMoreAdviceRecyclerView(apiService, patientId, adviceAdapter));
     }
 
     @Override
@@ -168,7 +201,7 @@ public class PatientDetailsFragment extends Fragment {
 
             TextView[] textViews = new TextView[7];
             String[] data = {
-                    "report",
+                    "Report",
                     patientId,
                     session.getSession_id(),
                     session.getStart_date(),
@@ -208,5 +241,28 @@ public class PatientDetailsFragment extends Fragment {
         // Set padding
         int padding_6 = Math.round(6 * getResources().getDisplayMetrics().density);
         textView.setPadding(padding_6, padding_6, padding_6, padding_6);
+    }
+
+    private void loadMoreAdviceRecyclerView( ApiService apiService, String userId, AdviceAdapter adviceAdapter ) {
+        Call<ApiResponse<Advice>> adviceApiResponseCall = apiService.getLoggedAdvice(userId, LIMIT * ++limitMultiplier);
+        adviceApiResponseCall.enqueue(new Callback<ApiResponse<Advice>>() {
+            @Override
+            public void onResponse(@NonNull Call<ApiResponse<Advice>> call, @NonNull Response<ApiResponse<Advice>> response) {
+
+                if (response.isSuccessful() && response.body() != null) {
+                    int oldSize = adviceList.size();
+                    adviceList.clear();
+                    adviceList.addAll(response.body().getItems());
+                    adviceAdapter.notifyItemRangeChanged(oldSize, adviceList.size());
+                } else {
+                    System.err.println("Error: " + response.code() + " - " + response);
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ApiResponse<Advice>> call, @NonNull Throwable throwable) {
+                Log.e("api", "onFailure: advice", throwable);
+            }
+        });
     }
 }

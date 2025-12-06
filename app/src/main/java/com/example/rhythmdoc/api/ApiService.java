@@ -1,5 +1,6 @@
 package com.example.rhythmdoc.api;
 
+import com.example.rhythmdoc.models.Advice;
 import com.example.rhythmdoc.models.ApiResponse;
 import com.example.rhythmdoc.models.Doctor;
 import com.example.rhythmdoc.models.Patient;
@@ -8,6 +9,7 @@ import com.example.rhythmdoc.models.Session;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface ApiService {
 
@@ -35,6 +37,12 @@ public interface ApiService {
     @GET("data/v1/get/summary/{uid}")
     Call<ApiResponse<Session>> getSessionDetails(
             @Path("uid") String patientId
+    );
+
+    @GET("patient/v1/advicelog/{uid}")
+    Call<ApiResponse<Advice>> getLoggedAdvice(
+            @Path("uid") String userId,
+            @Query("limit") int limit
     );
 
     @GET("user/v1/changepassword/{uid}/{opass}/{npass}")
